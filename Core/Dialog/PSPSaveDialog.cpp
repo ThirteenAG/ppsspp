@@ -313,7 +313,7 @@ const std::string PSPSaveDialog::GetSelectedSaveDirName() const
 	switch ((SceUtilitySavedataType)(u32)param.GetPspParam()->mode)
 	{
 	case SCE_UTILITY_SAVEDATA_TYPE_LOAD:
-	case SCE_UTILITY_SAVEDATA_TYPE_AUTOLOAD:
+	//case SCE_UTILITY_SAVEDATA_TYPE_AUTOLOAD:
 	case SCE_UTILITY_SAVEDATA_TYPE_SAVE:
 	case SCE_UTILITY_SAVEDATA_TYPE_AUTOSAVE:
 	case SCE_UTILITY_SAVEDATA_TYPE_AUTODELETE:
@@ -1114,7 +1114,7 @@ void PSPSaveDialog::ExecuteNotVisibleIOAction() {
 
 	switch ((SceUtilitySavedataType)(u32)param.GetPspParam()->mode) {
 	case SCE_UTILITY_SAVEDATA_TYPE_LOAD: // Only load and exit
-	case SCE_UTILITY_SAVEDATA_TYPE_AUTOLOAD:
+	case SCE_UTILITY_SAVEDATA_TYPE_AUTOLOAD: // issue #16939: maybe needs a special case for gta? GetSelectedSaveDirName doesn't take currentSelectedSave into account.
 		result = param.Load(param.GetPspParam(), GetSelectedSaveDirName(), currentSelectedSave);
 		break;
 	case SCE_UTILITY_SAVEDATA_TYPE_SAVE: // Only save and exit

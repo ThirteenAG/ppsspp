@@ -1480,6 +1480,15 @@ int SavedataParam::SetPspParam(SceUtilitySavedataParam *param)
 		return 0;
 	}
 
+	static PSPPointer<SceUtilitySavedataSaveName> saveNameListCached;
+	if (param->mode == SCE_UTILITY_SAVEDATA_TYPE_SIZES && param->focus == SCE_UTILITY_SAVEDATA_FOCUS_FIRSTLIST) {
+		saveNameListCached = param->saveNameList;
+	}
+	else if (!param->saveNameList.IsValid() && param->mode == SCE_UTILITY_SAVEDATA_TYPE_AUTOLOAD && param->focus == SCE_UTILITY_SAVEDATA_FOCUS_LATEST)
+	{
+		param->saveNameList = saveNameListCached;
+	}
+
 	if (param->mode == SCE_UTILITY_SAVEDATA_TYPE_LISTALLDELETE) {
 		Clear();
 		int realCount = 0;
@@ -1859,7 +1868,7 @@ int SavedataParam::GetSaveNameIndex(const SceUtilitySavedataParam *param) {
 bool SavedataParam::WouldHaveMultiSaveName(const SceUtilitySavedataParam *param) {
 	switch ((SceUtilitySavedataType)(u32)param->mode) {
 	case SCE_UTILITY_SAVEDATA_TYPE_LOAD:
-	case SCE_UTILITY_SAVEDATA_TYPE_AUTOLOAD:
+	//case SCE_UTILITY_SAVEDATA_TYPE_AUTOLOAD:
 	case SCE_UTILITY_SAVEDATA_TYPE_SAVE:
 	case SCE_UTILITY_SAVEDATA_TYPE_AUTOSAVE:
 	case SCE_UTILITY_SAVEDATA_TYPE_MAKEDATASECURE:
